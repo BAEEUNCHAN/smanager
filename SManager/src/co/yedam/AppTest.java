@@ -38,14 +38,14 @@ public class AppTest {
 		addStudent(sno,sname,phon); //입력
 		search(); // 목록 조회 
 
-//		System.out.println(">주소 수정");
-//		String adr = sc.nextLine();
-//		System.out.println(">학번 수정");
-//		String stN = sc.nextLine();
-//		modStudent(adr, stN);
+		System.out.println(">주소 수정");
+		String adr = sc.nextLine();
+		System.out.println(">학번 수정");
+		String stN = sc.nextLine();
+		modStudent(adr, stN);
 		System.out.println(">정보 삭제");
-		String phon = sc.nextLine();
-		removeStudent(phon);
+		String phon1 = sc.nextLine();
+		removeStudent(phon1);
 	}
 	// 삭제기능.
 	public static void removeStudent(String phone) {
