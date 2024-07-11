@@ -30,8 +30,10 @@ public class StudentControl {
 				addStudent();
 				break;
 			case 3:
+				modifyStudent();
 				break;
 			case 4:
+				deleteStudent();
 				break;
 			case 5:
 				System.out.println("종료");
@@ -40,6 +42,47 @@ public class StudentControl {
 
 		}
 	} // end of run().
+
+	// 삭제 기능
+	void deleteStudent() {
+		System.out.println("삭제할 학생 번호 입력 > ");
+		String stuN = sc.nextLine();
+
+		if (sdao.deleteStudent(stuN)) {
+			System.out.println("[처리되었습니다.]");
+		} else {
+			System.out.println("[삭제 처리가 되지 않았습니다.]");
+		}
+
+	}
+
+	// 수정기능.
+	void modifyStudent() {
+		String sno = ""; // 블럭 레벨 변수
+
+		while (true) {
+			System.out.println("변경할 학생번호를 입력하세요 > ");
+			sno = sc.nextLine();
+			if (sdao.selectExists(sno) == 1) {
+				// 학생번호 존재.
+				break;
+			}
+			System.out.println("[확인된 번호가 없습니다. 다시 입력 해주세요 >]");
+		}
+		System.out.println("변경할 연락처를 입력하세요 > ");
+		String phone = sc.nextLine();
+		System.out.println("변경할 주소를 입력하세요 > ");
+		String addr = sc.nextLine();
+
+		StudentVO svo = new StudentVO();
+		svo.setStdNo(sno);
+		svo.setStdPhone(phone);
+		svo.setAddress(addr);
+
+		if (sdao.updateStudent(svo)) {
+			System.out.println("[수정완료]");
+		}
+	}
 
 	// 등록 기능
 	void addStudent() {
@@ -53,16 +96,13 @@ public class StudentControl {
 		String addr = sc.nextLine();
 		System.out.println(">생일 입력");
 		String bir = sc.nextLine();
-		
+
 		StudentVO std = new StudentVO();
 		std.setStdNo(sno);
 		std.setStdName(sname);
 		std.setStdPhone(phon);
 		std.setAddress(addr);
 		std.setBirthdate(bir);
-		
-		
-		
 
 	}
 

@@ -8,6 +8,7 @@ public class MainApplication {
 		// 프로그램 시작
 		StudentControl scontrol = new StudentControl();
 		scontrol.run();
+	
 		
 
 	}
