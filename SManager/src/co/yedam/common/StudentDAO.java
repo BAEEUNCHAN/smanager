@@ -12,8 +12,7 @@ import co.yedam.vo.StudentVO;
 
 public class StudentDAO extends DAO {
 	// 삭제 기능
-	public boolean deleteStudent(String svo) {
-		conn = getConn();
+		public boolean deleteStudent(String svo) {
 		String sql = "delete tbl_student";
 		sql +=		" where  std_no = ? "; 
 		try {
