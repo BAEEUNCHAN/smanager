@@ -57,6 +57,7 @@ public class GameControl {
 				messeageList();
 				break;
 			case 5:
+				notice();
 				break;
 			case 6:
 				System.out.println();
@@ -166,6 +167,11 @@ public class GameControl {
 			System.out.println("----------------------------------------------------------------------------------");
 		}
 		System.out.println("[모든 쪽지를 확인 했습니다]");
+	}
+	
+	//공지사항 목록보기
+	void notice() {
+		List<GameVO> messages = gdao.messeageList();
 	}
 	
 }// GameControl
