@@ -155,6 +155,7 @@ public class GameControl {
 	void mail_view(List<GameVO> messages) {
 		if (messages.isEmpty()) {
 			System.out.println("[모든 쪽지를 확인 했습니다]");
+			System.out.println();
 			return;
 		}
 		

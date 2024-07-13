@@ -31,13 +31,12 @@ public class GameVO {
 		this.game_id = game_id;
 	}
 	
-	
 	public String getFriend_id() {
 		return friend_id;
 	}
 
-	public void setFriend_id(String friend_id) {
-		this.friend_id = friend_id;
+	public void setFriend_id(String frien_id) {
+		this.friend_id = frien_id;
 	}
 
 	public String getGame_pwd() {
