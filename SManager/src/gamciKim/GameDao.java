@@ -162,4 +162,30 @@ public class GameDao<messeageVO> extends DAO {
 		}
 		return list;
 	}
+	// 공지사항 목록 보기
+	public List<GameVO> noticeList() {
+		String sql = "select * ";
+		sql += "from notice";
+		List<GameVO> list = new ArrayList<>();
+		conn = getConn();
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			 while (rs.next()) { // 공지 내용 구성
+	                GameVO mvo = new GameVO();
+	                mvo.setNotice_num(rs.getInt("notice_num"));
+	                mvo.setNotice_title(rs.getString("Notice_title"));
+	                mvo.setUp_date(rs.getString("Up_date"));
+	                mvo.setNotice_view(rs.getString("Notice_view"));
+	                mvo.setRead_notice(rs.getString("Read_notice"));
+	              
+	                list.add(mvo);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+		}
+		return list;
+	} //공지사항 목록 보기 종료
+
+	
 }// 클래스

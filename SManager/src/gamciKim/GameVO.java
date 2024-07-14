@@ -30,7 +30,7 @@ public class GameVO {
 	public void setGame_id(String game_id) {
 		this.game_id = game_id;
 	}
-	
+
 	public String getFriend_id() {
 		return friend_id;
 	}
@@ -192,7 +192,10 @@ public class GameVO {
 	}
 
 	public String briefShow() {
-	    return String.format("%-10s %-15s %-15s %-20s",
-	            game_server, nickname, log_status, crt_location);
-	    }
+		return String.format("%-10s %-15s %-15s %-20s", game_server, nickname, log_status, crt_location);
+	}
+
+	public String briefShow1() {
+		return String.format("%-10s %-15s %-25s %-20s", notice_num, notice_title, up_date, notice_view, read_notice);
+	}
 } // 클래스 종료

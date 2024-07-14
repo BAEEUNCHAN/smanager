@@ -170,9 +170,47 @@ public class GameControl {
 		System.out.println("[모든 쪽지를 확인 했습니다]");
 	}
 	
-	//공지사항 목록보기
-	void notice() {
-		List<GameVO> messages = gdao.messeageList();
-	}
-	
+	// 공지사항 목록보기
+		void noticeList() {
+			List<GameVO> notice = gdao.noticeList();
+			Collections.reverse(notice); // 리스트를 역순으로 정렬
+			System.out.println("[공지사항]");
+			System.out.println("---------------------------------------------------------------------------");
+			System.out.println(String.format("%-10s %-15s %-25s %-20s", "번호", "제목", "업로드 날짜", "읽음"));
+			System.out.println("---------------------------------------------------------------------------");
+			for (GameVO gvo : notice) {
+				System.out.println(gvo.briefShow1());
+				System.out.println();
+			}
+			System.out.println("---------------------------------------------------------------------------");
+			System.out.println("자세히 보려면 번호 입력, 나가기 n");
+			System.out.print("선택 > ");
+			String input = sc.nextLine();
+
+//			boolean run1 = true;
+//			while (run1) {
+//				switch (input) {
+//				case "1":
+//				case "2":
+//				case "3":
+//				case "4":
+//				case "5":
+//					int noticeNum = Integer.parseInt(input) - 1;
+//					if (noticeNum >= 0 && noticeNum < notice.size()) {
+//						noticeView(notice.get(noticeNum));
+//					} else {
+//						System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+//					}
+//					break;
+//				case "n":
+//					run1 = false;
+//					System.out.println("프로그램을 종료합니다.");
+//					break;
+//				default:
+//					System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+//					break;
+//				}
+//			}
+		}
+
 }// GameControl
