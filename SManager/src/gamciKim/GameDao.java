@@ -1,16 +1,15 @@
 package gamciKim;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import co.yedam.vo.StudentVO;
 
 /* 내정보, 친구목록, 친구추가, 쪽지확인, 공지사항/ 
  * 
  */
 
-public class GameDao<messeageVO> extends DAO {
+public class GameDao extends DAO {
 
 	// 아이디 확인
 	public GameVO selectGameid(GameVO gLogin) {
@@ -79,7 +78,7 @@ public class GameDao<messeageVO> extends DAO {
 		List<GameVO> list = new ArrayList<>();
 		conn = getConn();
 		try {
-			rs = psmt.executeQuery(sql);
+			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, gLogin2.getGame_id());
 			rs = psmt.executeQuery();
 
@@ -106,6 +105,7 @@ public class GameDao<messeageVO> extends DAO {
 				+ "and game_server = ?";
 
 		String insertSql = "insert into friend_info (game_id, friend_id) " + "values (?, ?)";
+		String commit = "commit ";
 		conn = getConn();
 		try {
 			psmt = conn.prepareStatement(selectSql);
@@ -131,30 +131,36 @@ public class GameDao<messeageVO> extends DAO {
 	} // 친구 추가 종료
 
 	// 쪽지 확인
-	public List<GameVO> messeageList() {
-		String sql = "SELECT mail_num, to_id, from_id, mail_title, mail_view, sys_date "
-				    + "FROM note_mail"; // 실제 테이블
+	public List<GameVO> messeageList(GameVO gLogin3) {
+		String sql = "select n.mail_num,";
+		sql += "n.to_id,";
+		sql += "(SELECT nickname FROM my_info WHERE n.to_id = game_id) as tnick,";
+		sql += "n.from_id,";
+		sql += "(SELECT nickname FROM my_info WHERE n.from_id = game_id) as fnick,";
+		sql += "n.mail_title,";
+		sql += "n.mail_view,";
+		sql += "n.sys_date,";
+		sql += "n.read_mail";
+		sql += " from note_mail n";
+		sql += " where n.from_id = ?"; // 쪽지 확인 테이블
 		List<GameVO> list = new ArrayList<>();
-																												
+
 		conn = getConn();
 		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			if (rs.next()) { // 한 번만 실행되도록 if 문으로 변경
-	            GameVO mvo = new GameVO();
-	            mvo.setN_mail(1);
-	            mvo.setMail_num(1);
-	            mvo.setTo_id("펜리르(앙예링)");
-	            mvo.setFrom_id("앙예링");
-	            mvo.setMail_title("조졌다.");
-	            mvo.setMail_view("ㄴ r는 오늘도 눈물을 흘린ㄷr ...★\n"
-	                             + "가끔은 눈물을 참을 수 없는 \n"
-	                             + "ㄴ ㅐㄱ r 별루 ㄷr ......★\n"
-	                             + "하지만 울 줄 안다는건 조은거ㅇF\n"
-	                             + "나 ㅈr신에게 솔직할 수 있는거잖ㅇr...★");
-	            mvo.setSys_date("2024-07-10");
-	            
-	            list.add(mvo);
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, gLogin3.getGame_id());
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				GameVO mvo = new GameVO();
+				mvo.setMail_num(rs.getInt("mail_num"));
+				mvo.setT_nick(rs.getString("tnick"));
+				mvo.setFrom_id(rs.getString("from_id"));
+				mvo.setMail_title(rs.getString("mail_title"));
+				mvo.setMail_view("ㄴ r는 오늘도 눈물을 흘린ㄷr ...★\n" + "가끔은 눈물을 참을 수 없는 \n" + "ㄴ ㅐㄱ r 별루 ㄷr ......★\n"
+						+ "하지만 울 줄 안다는건 조은거ㅇF\n" + "나 ㅈr신에게 솔직할 수 있는거잖ㅇr...★");
+				mvo.setSys_date("2024-07-10");
+
+				list.add(mvo);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -162,30 +168,55 @@ public class GameDao<messeageVO> extends DAO {
 		}
 		return list;
 	}
+
 	// 공지사항 목록 보기
 	public List<GameVO> noticeList() {
 		String sql = "select * ";
-		sql += "from notice";
+		sql += "from notice ";
 		List<GameVO> list = new ArrayList<>();
 		conn = getConn();
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
-			 while (rs.next()) { // 공지 내용 구성
-	                GameVO mvo = new GameVO();
-	                mvo.setNotice_num(rs.getInt("notice_num"));
-	                mvo.setNotice_title(rs.getString("Notice_title"));
-	                mvo.setUp_date(rs.getString("Up_date"));
-	                mvo.setNotice_view(rs.getString("Notice_view"));
-	                mvo.setRead_notice(rs.getString("Read_notice"));
-	              
-	                list.add(mvo);
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
+			while (rs.next()) { // 공지 내용 구성
+				GameVO mvo = new GameVO();
+				mvo.setNotice_num(rs.getInt("notice_num"));
+				mvo.setNotice_title(rs.getString("Notice_title"));
+				mvo.setUp_date(rs.getString("Up_date"));
+				mvo.setNotice_view(rs.getString("Notice_view"));
+				mvo.setRead_notice(rs.getString("Read_notice"));
+
+				list.add(mvo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return list;
-	} //공지사항 목록 보기 종료
+	} // 공지사항 목록 보기 종료
 
-	
+	// 공지사항 자세히 보기
+	public GameVO noticeview(int gLogin4) {
+		String sql = "select * ";
+		sql += "from notice ";
+		sql += "where notice_num = ?";
+		conn = getConn();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, gLogin4);
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				GameVO gvo = new GameVO();
+				gvo.setNotice_num(rs.getInt("notice_num"));
+				gvo.setNotice_title(rs.getString("notice_title"));
+				gvo.setNotice_view(rs.getString("notice_view"));
+				gvo.setUp_date(rs.getString("up_date"));
+				gvo.setRead_notice(rs.getString("Read_notice"));
+				return gvo;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }// 클래스

@@ -1,9 +1,8 @@
 package gamciKim;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-
-import co.yedam.vo.StudentVO;
 
 public class GameControl {
 	Scanner sc = new Scanner(System.in);
@@ -12,6 +11,7 @@ public class GameControl {
 
 	public void selectGameid() {
 		while (true) {
+			System.out.println("Final fate Online");
 			System.out.println("안녕하세요 모험가님! 오늘도 모험을 떠나볼까요?");
 			System.out.println("아이디 :   ");
 			String id = sc.nextLine();
@@ -44,29 +44,27 @@ public class GameControl {
 			case 1:
 				myinfoSelect();
 				break;
-
 			case 2:
 				friendInfo();
 				break;
-
 			case 3:
 				insertFri();
 				break;
-
 			case 4:
 				messeageList();
 				break;
 			case 5:
-				notice();
+				noticeList();
 				break;
 			case 6:
 				System.out.println();
 				System.out.println("[오늘 모험도 정말 멋졌어요! 다음에 또 만나요~!]");
 				isTrue = false;
-				
+				break;
+
 			default:
-                System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
-                break;
+				System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+				break;
 
 			}
 		} // switch 종료
@@ -99,9 +97,9 @@ public class GameControl {
 		GameVO friend_Id = new GameVO();
 		friend_Id.setGame_id(logId);
 		List<GameVO> Games = gdao.friendInfo(friend_Id);
-		System.out.println("----------------------------------------------------------------");
+		System.out.println("===============================================================");
 		System.out.println(String.format("%-10s %-15s %-15s %-20s", "서버", "닉네임", "현재 상태", "현재 위치"));
-		System.out.println("----------------------------------------------------------------");
+		System.out.println("===============================================================");
 		for (GameVO gvo : Games) {
 			System.out.println(gvo.briefShow());
 		}
@@ -130,12 +128,14 @@ public class GameControl {
 
 	// 쪽지확인
 	void messeageList() {
-		List<GameVO> messages = gdao.messeageList();
+		GameVO mail_id = new GameVO();
+		mail_id.setGame_id(logId);
+		List<GameVO> messages = gdao.messeageList(mail_id);
 		System.out.println("★신규 쪽지 총 " + messages.size() + "건");
-		System.out.println("자세히 보기 y                  나가기 n");
-		System.out.println("----------------------------------------------------------------------------------");
+		System.out.println("자세히 보기 y                    나가기 n");
+		System.out.println("--------------------------------------------------------------------------");
 		System.out.print("선택 > ");
-		String choice = sc.nextLine().trim();
+		String choice = sc.nextLine();
 
 		switch (choice) {
 		case "y":
@@ -151,66 +151,70 @@ public class GameControl {
 		}
 	}
 
-	// 메시지 상세 보기
+	// 쪽지 상세 보기
 	void mail_view(List<GameVO> messages) {
 		if (messages.isEmpty()) {
 			System.out.println("[모든 쪽지를 확인 했습니다]");
 			System.out.println();
 			return;
 		}
-		
+
 		for (GameVO message : messages) {
-			System.out.println("쪽지번호 " + message.getMail_num() + "      작성자 " + message.getTo_id());
+			System.out.println("쪽지번호 " + message.getMail_num() + "      작성자 " + message.getT_nick());
 			System.out.println("제목: " + message.getMail_title());
 			System.out.println(message.getMail_view());
 			System.out.println();
 			System.out.println("보낸 날짜: " + message.getSys_date());
-			System.out.println("----------------------------------------------------------------------------------");
+			System.out.println("--------------------------------------------------------------------------");
 		}
 		System.out.println("[모든 쪽지를 확인 했습니다]");
 	}
-	
+
 	// 공지사항 목록보기
-		void noticeList() {
+	void noticeList() {
+		boolean run1 = true;
+		while (run1) {
 			List<GameVO> notice = gdao.noticeList();
 			Collections.reverse(notice); // 리스트를 역순으로 정렬
 			System.out.println("[공지사항]");
-			System.out.println("---------------------------------------------------------------------------");
-			System.out.println(String.format("%-10s %-15s %-25s %-20s", "번호", "제목", "업로드 날짜", "읽음"));
-			System.out.println("---------------------------------------------------------------------------");
+			System.out.println("===========================================================================");
+			System.out.println(String.format("%-10s %-20s %-25s %-20s", "번호", "제목", "업로드 날짜", "읽음"));
+			System.out.println("===========================================================================");
 			for (GameVO gvo : notice) {
 				System.out.println(gvo.briefShow1());
 				System.out.println();
 			}
-			System.out.println("---------------------------------------------------------------------------");
+			System.out.println("===========================================================================");
 			System.out.println("자세히 보려면 번호 입력, 나가기 n");
 			System.out.print("선택 > ");
+
 			String input = sc.nextLine();
 
-//			boolean run1 = true;
-//			while (run1) {
-//				switch (input) {
-//				case "1":
-//				case "2":
-//				case "3":
-//				case "4":
-//				case "5":
-//					int noticeNum = Integer.parseInt(input) - 1;
-//					if (noticeNum >= 0 && noticeNum < notice.size()) {
-//						noticeView(notice.get(noticeNum));
-//					} else {
-//						System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
-//					}
-//					break;
-//				case "n":
-//					run1 = false;
-//					System.out.println("프로그램을 종료합니다.");
-//					break;
-//				default:
-//					System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
-//					break;
-//				}
-//			}
+			try {
+				int noticeNum = Integer.parseInt(input);
+				noticeView(noticeNum);
+
+			} catch (Exception e) {
+				if (input.equals("n")) {
+					run1 = false;
+					System.out.println("[선택화면으로 돌아갑니다.]");
+				} else {
+					System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+				}
+			}
 		}
+	} // 공지사항 목록보기 종료
+
+	// 공지사항 자세히 보기
+	void noticeView(int noticeNum) {
+		GameVO gvo = gdao.noticeview(noticeNum);
+		System.out.println( "번호 " + gvo.getNotice_num()+ " | "+"★제목  " + gvo.getNotice_title() + " | " + "읽음 여부 " + gvo.getRead_notice());
+		System.out.println("=========================================================================================================");
+		System.out.println(gvo.getNotice_view());
+		System.out.println();
+		System.out.println("업로드 날짜 " + gvo.getUp_date().substring(0,10));
+		System.out.println("---------------------------------------------------------------------------------------------------------");
+		System.out.println();
+	} // 공지사항 자세히 보기
 
 }// GameControl

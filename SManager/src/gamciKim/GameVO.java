@@ -13,6 +13,7 @@ public class GameVO {
 	private int n_mail; // 새로운 쪽지 수
 	private int mail_num;// 쪽지 번호
 	private String to_id; // (쪽) 보낸이
+	private String t_nick; // (쪽) 닉네임
 	private String from_id; // (쪽) 받는이
 	private String mail_title; // (쪽) 제목
 	private String mail_view; // (쪽) 내용
@@ -119,6 +120,14 @@ public class GameVO {
 		this.to_id = to_id;
 	}
 
+	public String getT_nick() {
+		return t_nick;
+	}
+
+	public void setT_nick(String t_nick) {
+		this.t_nick = t_nick;
+	}
+
 	public String getFrom_id() {
 		return from_id;
 	}
@@ -196,6 +205,7 @@ public class GameVO {
 	}
 
 	public String briefShow1() {
-		return String.format("%-10s %-15s %-25s %-20s", notice_num, notice_title, up_date, notice_view, read_notice);
+		return String.format("%-10s %-20s %-25s %-20s", notice_num, notice_title, up_date.substring(0,10), read_notice);
 	}
+
 } // 클래스 종료
