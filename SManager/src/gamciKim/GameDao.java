@@ -105,7 +105,6 @@ public class GameDao extends DAO {
 				+ "and game_server = ?";
 
 		String insertSql = "insert into friend_info (game_id, friend_id) " + "values (?, ?)";
-		String commit = "commit ";
 		conn = getConn();
 		try {
 			psmt = conn.prepareStatement(selectSql);

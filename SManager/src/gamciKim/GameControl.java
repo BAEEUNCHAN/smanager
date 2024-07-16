@@ -11,7 +11,13 @@ public class GameControl {
 
 	public void selectGameid() {
 		while (true) {
-			System.out.println("Final fate Online");
+			System.out.println();
+			System.out.println("·▄▄▄▪   ▐ ▄  ▄▄▄· ▄▄▌      ·▄▄▄ ▄▄▄· ▄▄▄▄▄▄▄▄ .           ▐ ▄ ▄▄▌  ▪   ▐ ▄ ▄▄▄ .");
+		    System.out.println("▐▄▄·██ •█▌▐█▐█ ▀█ ██•      ▐▄▄·▐█ ▀█ •██  ▀▄.▀·    ▪     •█▌▐███•  ██ •█▌▐█▀▄.▀·");
+		    System.out.println("██▪ ▐█·▐█▐▐▌▄█▀▀█ ██▪      ██▪ ▄█▀▀█  ▐█.▪▐▀▀▪▄     ▄█▀▄ ▐█▐▐▌██▪  ▐█·▐█▐▐▌▐▀▀▪▄");
+		    System.out.println("██▌.▐█▌██▐█▌▐█ ▪▐▌▐█▌▐▌    ██▌.▐█ ▪▐▌ ▐█▌·▐█▄▄▌    ▐█▌.▐▌██▐█▌▐█▌▐▌▐█▌██▐█▌▐█▄▄▌");
+		    System.out.println("▀▀▀ ▀▀▀▀▀ █▪ ▀  ▀ .▀▀▀     ▀▀▀  ▀  ▀  ▀▀▀  ▀▀▀      ▀█▄▀▪▀▀ █▪.▀▀▀ ▀▀▀▀▀ █▪ ▀▀▀ ");
+		    System.out.println();
 			System.out.println("안녕하세요 모험가님! 오늘도 모험을 떠나볼까요?");
 			System.out.println("아이디 :   ");
 			String id = sc.nextLine();
@@ -38,8 +44,13 @@ public class GameControl {
 		while (isTrue) {
 			System.out.println("1.내정보 확인 2.친구 목록 3.친구 추가 4. 쪽지 확인 5. 공지사항 6. 로그아웃");
 			System.out.print("선택 > ");
-			int menu = Integer.parseInt(sc.nextLine());
-
+			int menu = -1;
+			try {
+				 menu = Integer.parseInt(sc.nextLine());
+			} catch (NumberFormatException e) {
+				System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+				continue;
+			}
 			switch (menu) {
 			case 1:
 				myinfoSelect();
@@ -63,7 +74,7 @@ public class GameControl {
 				break;
 
 			default:
-				System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+				System.out.println("메뉴 입력 오류입니다. 다시 시도해주세요.");
 				break;
 
 			}
@@ -135,8 +146,13 @@ public class GameControl {
 		System.out.println("자세히 보기 y                    나가기 n");
 		System.out.println("--------------------------------------------------------------------------");
 		System.out.print("선택 > ");
-		String choice = sc.nextLine();
-
+		String choice = null;
+		try {
+			choice = sc.nextLine();
+		} catch (NumberFormatException e) {
+			System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
+			return;
+		}
 		switch (choice) {
 		case "y":
 			mail_view(messages);
@@ -208,12 +224,15 @@ public class GameControl {
 	// 공지사항 자세히 보기
 	void noticeView(int noticeNum) {
 		GameVO gvo = gdao.noticeview(noticeNum);
-		System.out.println( "번호 " + gvo.getNotice_num()+ " | "+"★제목  " + gvo.getNotice_title() + " | " + "읽음 여부 " + gvo.getRead_notice());
-		System.out.println("=========================================================================================================");
+		System.out.println("번호 " + gvo.getNotice_num() + " | " + "★제목  " + gvo.getNotice_title() + " | " + "읽음 여부 "
+				+ gvo.getRead_notice());
+		System.out.println(
+				"=========================================================================================================");
 		System.out.println(gvo.getNotice_view());
 		System.out.println();
-		System.out.println("업로드 날짜 " + gvo.getUp_date().substring(0,10));
-		System.out.println("---------------------------------------------------------------------------------------------------------");
+		System.out.println("업로드 날짜 " + gvo.getUp_date().substring(0, 10));
+		System.out.println(
+				"---------------------------------------------------------------------------------------------------------");
 		System.out.println();
 	} // 공지사항 자세히 보기
 
