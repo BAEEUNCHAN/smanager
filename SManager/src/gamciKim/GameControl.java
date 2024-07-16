@@ -69,6 +69,11 @@ public class GameControl {
 				break;
 			case 6:
 				System.out.println();
+				System.out.println("▄▄▄▄·  ▄· ▄▌▄▄▄ .▄▄▄▄·  ▄· ▄▌▄▄▄ .");
+				System.out.println("▐█ ▀█▪▐█▪██▌▀▄.▀·▐█ ▀█▪▐█▪██▌▀▄.▀·");
+				System.out.println("▐█▀▀█▄▐█▌▐█▪▐▀▀▪▄▐█▀▀█▄▐█▌▐█▪▐▀▀▪▄");
+				System.out.println("██▄▪▐█ ▐█▀·.▐█▄▄▌██▄▪▐█ ▐█▀·.▐█▄▄▌");
+				System.out.println("·▀▀▀▀   ▀ •  ▀▀▀ ·▀▀▀▀   ▀ •  ▀▀▀ ");
 				System.out.println("[오늘 모험도 정말 멋졌어요! 다음에 또 만나요~!]");
 				isTrue = false;
 				break;
